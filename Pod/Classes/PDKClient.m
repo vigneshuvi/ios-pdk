@@ -261,7 +261,7 @@ static NSString * const kPDKPinterestWebOAuthURLString = @"https://api.pinterest
         if ([SFSafariViewController class]) {
             UIViewController *mainViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
             if ([[mainViewController presentedViewController] isKindOfClass:[SFSafariViewController class]]) {
-                [mainViewController dismissViewControllerAnimated:YES completion:NO];
+                [mainViewController dismissViewControllerAnimated:YES completion:nil];
             }
         }
         
