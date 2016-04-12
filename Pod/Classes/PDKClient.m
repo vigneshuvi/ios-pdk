@@ -622,7 +622,7 @@ static NSString * const kPDKPinterestWebOAuthURLString = @"https://api.pinterest
 + (void)openURL:(NSURL *)url
 {
     NSString *scheme = [[url scheme] lowercaseString];
-    if ([SFSafariViewController class] && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
+    if (NSClassFromString(@"SFSafariViewController") != nil && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
         UIViewController *viewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
         [viewController presentViewController:safariViewController animated:YES completion:nil];
