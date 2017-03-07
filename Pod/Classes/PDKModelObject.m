@@ -11,6 +11,16 @@
 #import "PDKImageInfo.h"
 
 @implementation PDKModelObject
+// Pinterest web service response format changed    
+- (NSDate*)convertStringToDate:(NSString*)dateStr{
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z"];
+    [formatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
+    NSDate *date = [formatter dateFromString:dateStr];
+
+    return date;
+}
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 {
@@ -19,8 +29,7 @@
     
         _identifier = dictionary[@"id"];
         
-        NSTimeInterval creationTimestamp = [dictionary[@"created_at"] doubleValue];
-        _creationTime = [NSDate dateWithTimeIntervalSince1970:creationTimestamp];
+        _creationTime = [self convertStringToDate:dictionary[@"created_at"]];
         
         _images = dictionary[@"image"];
         _counts = dictionary[@"counts"];
