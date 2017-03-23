@@ -10,16 +10,34 @@
 
 #import "PDKImageInfo.h"
 
+@interface NSDateFormatter (Formats)
+
++ (NSDateFormatter*) responseDateFormatting;
+
+@end
+
+@implementation NSDateFormatter (Formats)
+
++ (NSDateFormatter*) responseDateFormatting{
+    static NSDateFormatter *_responseDateFormatting;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _responseDateFormatting = [NSDateFormatter new];
+        [_responseDateFormatting setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z"];
+        [formatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
+    });
+    return _responseDateFormatting;
+}
+
+@end
+
+
 @implementation PDKModelObject
+
 // Pinterest web service response format changed    
 - (NSDate*)convertStringToDate:(NSString*)dateStr{
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z"];
-    [formatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
-    NSDate *date = [formatter dateFromString:dateStr];
-
-    return date;
+   return [[NSDateFormatter responseDateFormatting] dateFromString:dateStr];
 }
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
@@ -28,9 +46,7 @@
     if (self) {
     
         _identifier = dictionary[@"id"];
-        
         _creationTime = [self convertStringToDate:dictionary[@"created_at"]];
-        
         _images = dictionary[@"image"];
         _counts = dictionary[@"counts"];
     }
